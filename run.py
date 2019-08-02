@@ -18,10 +18,10 @@ def get_dataset(dataset, reduced):
     elif dataset == 'cifar100':
         (Xtr, ytr), (Xts, yts) = datasets.cifar100.load_data()
     elif dataset == 'headwear':
-        Xtr = np.load('Xtr.npy')
-        ytr = np.load('ytr.npy')
-        Xts = np.load('Xts.npy')
-        yts = np.load('yts.npy')
+        Xtr = np.load('../Xtr.npy')
+        ytr = np.load('../ytr.npy')
+        Xts = np.load('../Xts.npy')
+        yts = np.load('../yts.npy')
         return (Xtr, ytr), (Xts, yts)
     else:
         raise Exception('Unknown dataset %s' % dataset)
@@ -206,7 +206,7 @@ class Child:
         self.model = self.create_model(input_shape)
         optimizer = optimizers.SGD(decay=1e-4)
         self.model.compile(optimizer, 'categorical_crossentropy', ['accuracy'])
-        self.model.save_weights('./init_child.h5')
+        #self.model.save_weights('./init_child.h5')
 
     def reinit(self):
         self.model.load_weights('./init_child.h5')
@@ -262,12 +262,12 @@ for epoch in range(CONTROLLER_EPOCHS):
     print('-> Child accuracy: %.3f (elaspsed time: %ds)' % (accuracy, (toc-tic)))
     mem_accuracies.append(accuracy)
 
-    if len(mem_softmaxes) > 5:
+    if len(mem_accuarcies) > 5:
         # ricardo: I let some epochs pass, so that the normalization is more robust
         controller.fit(mem_softmaxes, mem_accuracies, mem_Types)
-        print("batch_acc:" ,np.mean(mem_accuracies))
+        print("*********************************************************************batch_acc:" ,np.mean(mem_accuracies))
         mem_softmaxes = []
-        mem_accuracies = []
+        #mem_accuracies = []
         mem_Types = []
     print()
 
