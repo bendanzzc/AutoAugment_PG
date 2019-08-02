@@ -255,7 +255,7 @@ class Child:
         self.model = self.create_model(input_shape)
         optimizer = optimizers.SGD(decay=1e-4)
         self.model.compile(optimizer, 'categorical_crossentropy', ['accuracy'])
-        self.model.save_weights('./init_child.h5')
+        #self.model.save_weights('./init_child.h5')
 
     def reinit(self):
         self.model.load_weights('./init_child.h5')
@@ -319,8 +319,8 @@ for epoch in range(CONTROLLER_EPOCHS):
         # ricardo: I let some epochs pass, so that the normalization is more robust
         controller.fit(mem_softmaxes, mem_advantage, epoch)
         print("***********************************************************************************************************batch_acc:" ,np.mean(mem_accuracies))
-        #mem_softmaxes = []
-        #mem_accuracies = []
+        mem_softmaxes[:] = mem_softmaxes[1:]
+        mem_advantage[:] = mem_advantage[1:]
         #mem_Types = []
     print()
 
