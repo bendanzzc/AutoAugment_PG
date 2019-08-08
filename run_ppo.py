@@ -318,7 +318,7 @@ for epoch in range(CONTROLLER_EPOCHS):
     if len(mem_softmaxes) > 5:
         # ricardo: I let some epochs pass, so that the normalization is more robust
         controller.fit(mem_softmaxes, mem_advantage, epoch)
-        print("***********************************************************************************************************batch_acc:" ,np.mean(mem_accuracies))
+        print("***********************************************************************************************************batch_acc:" ,np.mean(mem_accuracies[-3:]))
         mem_softmaxes[:] = mem_softmaxes[1:]
         mem_advantage[:] = mem_advantage[1:]
         #mem_Types = []

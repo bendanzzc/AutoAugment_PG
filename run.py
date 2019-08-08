@@ -146,7 +146,7 @@ class Controller:
         session = self.session
         min_acc = np.min(mem_accuracies)
         max_acc = np.max(mem_accuracies)
-        mid_acc = (min_acc + max_acc) / 2
+        mid_acc = np.mean(mem_accuracies)
         dummy_input = np.zeros((1, 30, 1))
         dict_input = {self.model.input: dummy_input}
         dict_outputs = {}
@@ -262,10 +262,10 @@ for epoch in range(CONTROLLER_EPOCHS):
     print('-> Child accuracy: %.3f (elaspsed time: %ds)' % (accuracy, (toc-tic)))
     mem_accuracies.append(accuracy)
 
-    if len(mem_accuarcies) > 5:
+    if len(mem_accuracies) > 5:
         # ricardo: I let some epochs pass, so that the normalization is more robust
         controller.fit(mem_softmaxes, mem_accuracies, mem_Types)
-        print("*********************************************************************batch_acc:" ,np.mean(mem_accuracies))
+        print("*********************************************************************batch_acc:" ,np.mean(mem_accuracies[-3:]))
         mem_softmaxes = []
         #mem_accuracies = []
         mem_Types = []
